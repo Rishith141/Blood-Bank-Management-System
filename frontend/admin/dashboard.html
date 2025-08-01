@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Blood Bank Management System</title>
+    <link rel="stylesheet" href="/assets/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="dashboard.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-heartbeat"></i> Admin Dashboard</h1>
+            <div>
+                <span id="adminName"></span>
+                <button onclick="logout()" class="btn-logout">Logout</button>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-content">
+                    <h3 id="totalDonors">0</h3>
+                    <p>Total Donors</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-hand-holding-heart"></i>
+                <div class="stat-content">
+                    <h3 id="totalRecipients">0</h3>
+                    <p>Total Recipients</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-tint"></i>
+                <div class="stat-content">
+                    <h3 id="totalDonations">0</h3>
+                    <p>Total Donations</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-content">
+                    <h3 id="pendingRequests">0</h3>
+                    <p>Pending Requests</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-boxes"></i>
+                <div class="stat-content">
+                    <h3 id="totalBloodUnits">0</h3>
+                    <p>Total Blood Units</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" onclick="showTab('dashboard')">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </button>
+            <button class="tab-btn" onclick="showTab('inventory')">
+                <i class="fas fa-boxes"></i> Inventory
+            </button>
+            <button class="tab-btn" onclick="showTab('users')">
+                <i class="fas fa-users"></i> Users
+            </button>
+            <button class="tab-btn" onclick="showTab('donations')">
+                <i class="fas fa-tint"></i> Donations
+            </button>
+            <button class="tab-btn" onclick="showTab('requests')">
+                <i class="fas fa-hand-holding-heart"></i> Requests
+            </button>
+            <button class="tab-btn" onclick="showTab('reports')">
+                <i class="fas fa-chart-bar"></i> Reports
+            </button>
+            <button class="tab-btn" onclick="showTab('notifications')">
+                <i class="fas fa-bell"></i> Notifications
+            </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-pane active">
+                <div class="dashboard-grid">
+                    <!-- Blood Inventory Chart - Made Bigger -->
+                    <div class="dashboard-card inventory-chart-card">
+                        <h2><i class="fas fa-chart-bar"></i> Blood Inventory Overview</h2>
+                        <div class="chart-container">
+                            <canvas id="inventoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Donations -->
+                    <div class="dashboard-card">
+                        <h2><i class="fas fa-history"></i> Recent Donations</h2>
+                        <div id="recentDonations" class="recent-list">
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+
+                    <!-- Recent Requests -->
+                    <div class="dashboard-card">
+                        <h2><i class="fas fa-bell"></i> Recent Requests</h2>
+                        <div id="recentRequests" class="recent-list">
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Tab -->
+            <div id="inventory" class="tab-pane">
+                <div class="dashboard-card">
+                    <h2><i class="fas fa-boxes"></i> Inventory Management</h2>
+                    <div class="tab-actions">
+                        <button onclick="showInventory()" class="btn-action">
+                            <i class="fas fa-list"></i> View Inventory
+                        </button>
+                        <button onclick="showLowStockAlerts()" class="btn-action">
+                            <i class="fas fa-exclamation-triangle"></i> Low Stock Alerts
+                        </button>
+                        <button onclick="updateInventoryManually()" class="btn-action">
+                            <i class="fas fa-edit"></i> Update Inventory
+                        </button>
+                    </div>
+                    <div id="inventoryContent" class="tab-content-area">
+                        <p>Click a button above to manage inventory</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="users" class="tab-pane">
+                <div class="dashboard-card">
+                    <h2><i class="fas fa-users"></i> User Management</h2>
+                    <div class="tab-actions">
+                        <button onclick="showUsers()" class="btn-action">
+                            <i class="fas fa-users"></i> View All Users
+                        </button>
+                        <button onclick="showDonors()" class="btn-action">
+                            <i class="fas fa-user-plus"></i> View Donors
+                        </button>
+                        <button onclick="showRecipients()" class="btn-action">
+                            <i class="fas fa-user-check"></i> View Recipients
+                        </button>
+                        <button onclick="showAdmins()" class="btn-action">
+                            <i class="fas fa-user-shield"></i> View Admins
+                        </button>
+                    </div>
+                    <div id="usersContent" class="tab-content-area">
+                        <p>Click a button above to view users</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donations Tab -->
+            <div id="donations" class="tab-pane">
+                <div class="dashboard-card">
+                    <h2><i class="fas fa-tint"></i> Donation Management</h2>
+                    <div class="tab-actions">
+                        <button onclick="showDonations()" class="btn-action">
+                            <i class="fas fa-list"></i> View All Donations
+                        </button>
+                        <button onclick="showPendingDonations()" class="btn-action">
+                            <i class="fas fa-clock"></i> Pending Donations
+                        </button>
+                        <button onclick="showCompletedDonations()" class="btn-action">
+                            <i class="fas fa-check-circle"></i> Completed Donations
+                        </button>
+                    </div>
+                    <div id="donationsContent" class="tab-content-area">
+                        <p>Click a button above to view donations</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Requests Tab -->
+            <div id="requests" class="tab-pane">
+                <div class="dashboard-card">
+                    <h2><i class="fas fa-hand-holding-heart"></i> Request Management</h2>
+                    <div class="tab-actions">
+                        <button onclick="showRequests()" class="btn-action">
+                            <i class="fas fa-list"></i> View All Requests
+                        </button>
+                        <button onclick="showPendingRequests()" class="btn-action">
+                            <i class="fas fa-clock"></i> Pending Requests
+                        </button>
+                        <button onclick="showFulfilledRequests()" class="btn-action">
+                            <i class="fas fa-check-circle"></i> Fulfilled Requests
+                        </button>
+                    </div>
+                    <div id="requestsContent" class="tab-content-area">
+                        <p>Click a button above to view requests</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-pane">
+                <div class="dashboard-card">
+                    <h2><i class="fas fa-chart-bar"></i> Reports & Analytics</h2>
+                    <div class="tab-actions">
+                        <button onclick="showDonationReports()" class="btn-action">
+                            <i class="fas fa-chart-pie"></i> Donation Reports
+                        </button>
+                        <button onclick="showRequestReports()" class="btn-action">
+                            <i class="fas fa-chart-line"></i> Request Reports
+                        </button>
+                        <button onclick="showInventoryReports()" class="btn-action">
+                            <i class="fas fa-chart-area"></i> Inventory Reports
+                        </button>
+                        <button onclick="showActiveDonors()" class="btn-action">
+                            <i class="fas fa-trophy"></i> Active Donors
+                        </button>
+                    </div>
+                    <div id="reportsContent" class="tab-content-area">
+                        <p>Click a button above to view reports</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Tab -->
+            <div id="notifications" class="tab-pane">
+                <div class="dashboard-card">
+                    <h2><i class="fas fa-bell"></i> Notifications & Alerts</h2>
+                    <div class="tab-actions">
+                        <button onclick="showNotifications()" class="btn-action">
+                            <i class="fas fa-bell"></i> View Notifications
+                        </button>
+                        <button onclick="showLowStockAlerts()" class="btn-action">
+                            <i class="fas fa-exclamation-triangle"></i> Low Stock Alerts
+                        </button>
+                        <button onclick="sendNotification()" class="btn-action">
+                            <i class="fas fa-paper-plane"></i> Send Notification
+                        </button>
+                    </div>
+                    <div id="notificationsContent" class="tab-content-area">
+                        <p>Click a button above to manage notifications</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for detailed views -->
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div id="modalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html> 

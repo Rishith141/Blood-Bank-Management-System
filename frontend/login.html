@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Blood Bank Management System</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-card">
+            <h2><i class="fas fa-heartbeat"></i> Login</h2>
+            
+            <div id="alert" class="alert hidden"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="role">Login As</label>
+                    <select id="role" name="role" required>
+                        <option value="">Select Role</option>
+                        <option value="donor">Donor</option>
+                        <option value="recipient">Recipient</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="form-submit">Login</button>
+            </form>
+            
+            <div class="form-footer">
+                <p>Don't have an account? 
+                    <a href="/register.html">Register here</a>
+                </p>
+                <p><a href="/">Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = {
+                email: formData.get('email'),
+                password: formData.get('password'),
+                role: formData.get('role')
+            };
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Store token and user info
+                    localStorage.setItem('token', result.token);
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    
+                    // Redirect based on role
+                    switch (result.user.role) {
+                        case 'donor':
+                            window.location.href = '/donor/dashboard.html';
+                            break;
+                        case 'recipient':
+                            window.location.href = '/recipient/dashboard.html';
+                            break;
+                        case 'admin':
+                            window.location.href = '/admin/dashboard.html';
+                            break;
+                    }
+                } else {
+                    showAlert(result.error, 'error');
+                }
+            } catch (err) {
+                showAlert('Login failed. Please try again.', 'error');
+            }
+        });
+        
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alert');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alertDiv.classList.add('hidden');
+            }, 5000);
+        }
+    </script>
+</body>
+</html> 

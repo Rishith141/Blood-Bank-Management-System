@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Registration - Blood Bank Management System</title>
+    <link rel="stylesheet" href="/assets/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-card">
+            <h2><i class="fas fa-heartbeat"></i> Donor Registration</h2>
+            
+            <div id="alert" class="alert hidden"></div>
+            
+            <form id="donorForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required minlength="6">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bloodType">Blood Type</label>
+                    <select id="bloodType" name="bloodType" required>
+                        <option value="">Select Blood Type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" placeholder="City, State" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth</label>
+                    <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                    <small>Must be 18-65 years old to donate blood</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1234567890" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="eligibility" name="eligibility" required>
+                        I confirm that I meet the blood donation eligibility criteria
+                    </label>
+                </div>
+                
+                <button type="submit" class="form-submit">Register as Donor</button>
+            </form>
+            
+            <div class="form-footer">
+                <p>Already have an account? 
+                    <a href="/login.html">Login here</a>
+                </p>
+                <p><a href="/">Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('donorForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            
+            // Validate password match
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match!', 'error');
+                return;
+            }
+            
+            // Validate age
+            const dateOfBirth = new Date(formData.get('dateOfBirth'));
+            const today = new Date();
+            const age = today.getFullYear() - dateOfBirth.getFullYear();
+            const monthDiff = today.getMonth() - dateOfBirth.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())) {
+                age--;
+            }
+            
+            if (age < 18 || age > 65) {
+                showAlert('You must be between 18 and 65 years old to donate blood.', 'error');
+                return;
+            }
+            
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: password,
+                role: 'donor',
+                bloodType: formData.get('bloodType'),
+                location: formData.get('location'),
+                dateOfBirth: formData.get('dateOfBirth'),
+                phone: formData.get('phone')
+            };
+            
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showAlert('Registration successful! Please login.', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                } else {
+                    showAlert(result.error, 'error');
+                }
+            } catch (err) {
+                showAlert('Registration failed. Please try again.', 'error');
+            }
+        });
+        
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alert');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type}`;
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Bank Management System</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>Blood Bank</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#locations">Locations</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="/login.html" class="btn-login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Save Lives Through Blood Donation</h1>
+            <p>Join our community of donors and help save lives. Every drop counts in our mission to provide safe blood to those in need.</p>
+            <div class="hero-buttons">
+                <a href="/donor/register.html" class="btn-primary">Become a Donor</a>
+                <a href="/recipient/register.html" class="btn-secondary">Request Blood</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span>1000+ Donors</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-tint"></i>
+                    <span>5000+ Units</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-heart"></i>
+                    <span>1000+ Lives Saved</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="image/blood_donationcover.jpeg" alt="Blood Donation">
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About Blood Bank Management System</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <i class="fas fa-users"></i>
+                    <h3>For Donors</h3>
+                    <p>Register as a donor, check eligibility, schedule donations, and track your donation history with our comprehensive donor portal.</p>
+                </div>
+                <div class="about-card">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h3>For Recipients</h3>
+                    <p>Request blood by type and location, track request status, and get notified of availability through our streamlined process.</p>
+                </div>
+                <div class="about-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>For Admins</h3>
+                    <p>Manage users, update inventory, approve requests, and view analytics dashboard with real-time data visualization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-search"></i>
+                    <h3>Blood Search</h3>
+                    <p>Find available blood types by location with real-time inventory updates and instant notifications.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Donation Scheduling</h3>
+                    <p>Schedule blood donations at convenient times and locations with our easy-to-use booking system.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-bell"></i>
+                    <h3>Smart Notifications</h3>
+                    <p>Get notified about donation reminders, request updates, and emergency blood needs via email and SMS.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Location Services</h3>
+                    <p>Find nearby blood banks and donation centers using Google Maps integration with real-time directions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section id="locations" class="locations">
+        <div class="container">
+            <h2>Find Blood Banks Near You</h2>
+            <div class="locations-content">
+                <div class="map-container">
+                    <div id="map" class="google-map"></div>
+                </div>
+                <div class="locations-list">
+                    <h3>Nearby Blood Banks</h3>
+                    <div id="locationsList" class="locations-grid">
+                        <div class="location-card">
+                            <i class="fas fa-hospital"></i>
+                            <h4>Central Blood Bank</h4>
+                            <p>123 Medical Center Dr, Healthcare City</p>
+                            <span class="distance">0.5 km away</span>
+                        </div>
+                        <div class="location-card">
+                            <i class="fas fa-clinic-medical"></i>
+                            <h4>Community Blood Center</h4>
+                            <p>456 Health Plaza, Medical District</p>
+                            <span class="distance">1.2 km away</span>
+                        </div>
+                        <div class="location-card">
+                            <i class="fas fa-hospital-alt"></i>
+                            <h4>Emergency Blood Bank</h4>
+                            <p>789 Emergency Way, Trauma Center</p>
+                            <span class="distance">2.1 km away</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@bloodbank.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Address</h3>
+                            <p>123 Medical Center Dr, Healthcare City, HC 12345</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>Hours</h3>
+                            <p>24/7 Emergency Service</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Blood Bank Management System</h3>
+                    <p>Connecting donors and recipients to save lives through innovative technology and compassionate care.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="donor/register.html">Become a Donor</a></li>
+                        <li><a href="recipient/register.html">Request Blood</a></li>
+                        <li><a href="admin/login.html">Admin Login</a></li>
+                        <li><a href="#locations">Find Blood Banks</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Blood Bank Management System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/script.js"></script>
+</body>
+</html> 
